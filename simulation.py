@@ -1,7 +1,16 @@
 from typing import Any
 
 
+def logdecorator(fn):
+    def wrap(*args, **kwargs):
+        fn(*args, **kwargs)
+    return wrap
+
+
 class AttDict(dict):
+    def __init__(self, *args, **kwargs):
+        self.__getattr__ = logdecorator(self.__getattr__)
+
     def __getattr__(self, item):
         print(f'getattr( {self=}, {item=} )')
         print(f'return self.__getitem__({item})')
